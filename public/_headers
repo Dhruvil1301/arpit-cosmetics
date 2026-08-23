@@ -1,0 +1,29 @@
+# Cloudflare Pages headers.
+# -------------------------
+# Mirrors vercel.json and netlify.toml so the site behaves the same wherever it
+# is hosted. Keep the three in step.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  Cross-Origin-Opener-Policy: same-origin
+  # Allows exactly what the site uses: its own assets, Google Fonts, and the
+  # Maps embed. No image CDN — every picture is inline SVG.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; frame-src https://www.google.com https://maps.google.com; worker-src 'self' blob:; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'
+
+# Fingerprinted assets never change under the same name.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The entry document must be revalidated, or a deploy is invisible to anyone
+# with the old one cached.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/site.webmanifest
+  Cache-Control: public, max-age=86400

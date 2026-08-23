@@ -1,0 +1,17 @@
+# Arpit Cosmetics — https://www.arpitcosmetics.in
+# Update the Sitemap line if you deploy to a different domain.
+
+User-agent: *
+Allow: /
+
+# Build output and source maps are of no use to crawlers.
+Disallow: /assets/*.map$
+
+# Be a good citizen with aggressive SEO crawlers.
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+Sitemap: https://www.arpitcosmetics.in/sitemap.xml

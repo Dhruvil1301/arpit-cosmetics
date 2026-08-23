@@ -1,0 +1,16 @@
+# Cloudflare Pages — Arpit Cosmetics
+# ---------------------------------
+# `pages_build_output_dir` is all Pages needs from this file: it tells both the
+# dashboard build and `wrangler pages deploy` where the built site lands.
+#
+# The rest of the deployment contract lives in `public/`, because Pages copies
+# everything there to the root of the build:
+#   · public/_headers   — caching + security headers
+#   · public/_redirects — the SPA rewrite
+#
+# Deploy from a machine:  wrangler pages deploy dist --project-name arpit-cosmetics
+# Deploy from GitHub:     framework preset None · build `npm run build` · output `dist`
+
+name = "arpit-cosmetics"
+compatibility_date = "2026-08-23"
+pages_build_output_dir = "dist"

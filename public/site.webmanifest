@@ -1,0 +1,18 @@
+{
+  "name": "Arpit Cosmetics — Beauty, Fashion & Gift Destination",
+  "short_name": "Arpit Cosmetics",
+  "description": "Cosmetics, skincare, artificial jewellery, gifts and festival collections in Munshiganj, Amethi, Uttar Pradesh.",
+  "lang": "en-IN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FDFBF8",
+  "theme_color": "#FDFBF8",
+  "categories": ["shopping", "lifestyle", "beauty"],
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

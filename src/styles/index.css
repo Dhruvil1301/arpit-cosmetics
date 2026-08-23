@@ -1,0 +1,559 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Arpit Cosmetics — Global stylesheet
+   Light theme only. Warm neutral ground, metallic accents, generous air.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --ink: #2b211c;
+    --ink-soft: #6b5b52;
+    --warm: #fdf6ef;
+    --cream: #fbefe7;
+    --ivory: #f8e1dc;
+    --gold: #e8a33d;
+    --gold-light: #f2bb56;
+    --champagne: #fbe3d0;
+    --rose: #f2897a;
+    --coral: #e8624f;
+
+    /* Reveal rhythm — shared by CSS, Framer Motion and GSAP so the whole
+       site breathes on one clock. */
+    --ease-luxe: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 0.35s;
+    --dur-base: 0.7s;
+    --dur-slow: 1.2s;
+
+    --header-h: 84px;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Lenis drives scroll; native smooth scrolling would fight it. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
+  body {
+    @apply bg-warm font-sans text-ink antialiased;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+    /* A single warm wash under everything so 3D canvases never read as holes. */
+    background-image:
+      radial-gradient(100% 62% at 4% -6%, rgba(248, 225, 220, 0.9), transparent 58%),
+      radial-gradient(80% 55% at 100% 6%, rgba(251, 227, 208, 0.95), transparent 60%),
+      radial-gradient(66% 50% at 52% 106%, rgba(232, 98, 79, 0.14), transparent 62%),
+      linear-gradient(180deg, #fff9f3 0%, var(--warm) 34%, var(--cream) 100%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: rgba(232, 98, 79, 0.22);
+    color: var(--ink);
+  }
+
+  /* Slim, warm scrollbar — visible but never industrial. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--cream);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--coral);
+    border-radius: 999px;
+    border: 3px solid var(--cream);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--gold);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--coral);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display text-ink;
+    /* Fraunces has a soft, high-contrast axis; 600 gives the artwork
+       something to sit against without shouting. */
+    font-weight: 600;
+    font-optical-sizing: auto;
+    font-variation-settings: 'SOFT' 40, 'WONK' 1;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img {
+    @apply max-w-full;
+  }
+
+  /* Canvases are decorative scenery — never let them eat pointer events
+     unless a scene explicitly opts back in. */
+  canvas {
+    display: block;
+    touch-action: pan-y;
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------- Shell */
+  .shell {
+    @apply mx-auto w-full max-w-shell px-gutter;
+  }
+
+  .section {
+    @apply relative py-section;
+  }
+
+  /* --------------------------------------------------------- Flat cards */
+  /*
+    The earlier build used frosted glass here. Blur and translucency belong to
+    a photographic design language; against flat illustration they read as a
+    smudge. These are solid panels with a drawn border and a single hard
+    offset instead — the same vocabulary as the artwork.
+  */
+  .glass {
+    background: #fff9f3;
+    border: 1.5px solid rgba(43, 33, 28, 0.1);
+    box-shadow: 0 3px 0 rgba(43, 33, 28, 0.05);
+  }
+
+  .glass-tint {
+    background: #fbe3d0;
+    border: 1.5px solid rgba(43, 33, 28, 0.1);
+    box-shadow: 0 3px 0 rgba(43, 33, 28, 0.05);
+  }
+
+  /* ------------------------------------------------------------ Typography */
+  .eyebrow {
+    @apply font-sans text-eyebrow font-semibold uppercase text-gold-deep;
+  }
+
+  /* Accent words. A metallic gradient was the right call for a photographic
+     luxury page; here it fights the artwork. Flat coral, full stop. */
+  .gold-text {
+    color: #c7402f;
+  }
+
+  .gold-rule {
+    @apply block h-px w-full origin-left bg-gold-line;
+  }
+
+  /* ----------------------------------------------------------- Interaction */
+  /* Underline that wipes in from the left on hover — used across nav + links. */
+  .link-wipe {
+    @apply relative inline-block;
+  }
+  .link-wipe::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.6s var(--ease-luxe);
+  }
+  .link-wipe:hover::after,
+  .link-wipe:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* --------------------------------------------------------------- Surface */
+  .card-surface {
+    @apply relative overflow-hidden rounded-luxe bg-porcelain transition-[box-shadow,transform,border-color] duration-500 ease-luxe;
+    border: 1.5px solid rgba(43, 33, 28, 0.1);
+    box-shadow: 0 3px 0 rgba(43, 33, 28, 0.05);
+  }
+  .card-surface:hover {
+    border-color: rgba(232, 98, 79, 0.45);
+    box-shadow: 0 6px 0 rgba(232, 98, 79, 0.18);
+    transform: translateY(-3px);
+  }
+
+  /* Hairline gold frame inset from the edge — a recurring couture motif. */
+  .gold-frame::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1.5px solid rgba(232, 98, 79, 0.22);
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Fine film grain — kills banding on the large soft gradients. */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.14;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  }
+
+  .mask-fade-y {
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .will-transform {
+    will-change: transform;
+  }
+
+  .gpu {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+
+  /* Hide the OS pointer only where the bespoke cursor is actually running. */
+  .cursor-hidden,
+  .cursor-hidden * {
+    cursor: none !important;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ============================== Swiper ==================================== */
+.swiper-luxe .swiper-slide {
+  height: auto;
+  transition: opacity 0.8s var(--ease-luxe);
+}
+.swiper-luxe .swiper-pagination-bullet {
+  width: 26px;
+  height: 2px;
+  border-radius: 0;
+  background: rgba(43, 33, 28, 0.16);
+  opacity: 1;
+  transition: background 0.5s var(--ease-luxe), width 0.5s var(--ease-luxe);
+}
+.swiper-luxe .swiper-pagination-bullet-active {
+  width: 52px;
+  background: var(--coral);
+}
+
+/* ========================= Reduced motion ================================= */
+/* Respect the OS setting: strip decorative motion, keep the site fully usable. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain::after {
+    display: none;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ============================ Line icons ================================== */
+/* Icons rest fully drawn; on hover of the parent card they redraw themselves. */
+.group:hover .luxe-icon {
+  --icon-draw: 0;
+}
+.group .luxe-icon {
+  --icon-draw: 0;
+}
+.group:hover .luxe-icon path {
+  animation: icon-redraw 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes icon-redraw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .luxe-icon path {
+    animation: none;
+  }
+}
+
+/* ============================ Bespoke cursor ============================== */
+/*
+  The JS loop writes only `transform` and `opacity` — both compositor-only
+  properties. Everything else (scale on state change, colour, the label) is a
+  CSS transition driven by custom properties, so a state change never costs a
+  main-thread tween.
+*/
+.cursor-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: none;
+  contain: strict;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cursor-root {
+    display: block;
+  }
+}
+
+.cursor-ring {
+  --c-scale: 1;
+  --c-border: rgba(232, 98, 79, 0.65);
+  --c-fill: rgba(232, 98, 79, 0.09);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1.5px solid var(--c-border);
+  background: var(--c-fill);
+  opacity: 0;
+  will-change: transform, opacity;
+  /* The ring element is moved by JS; the *inner* box does the scaling, so the
+     two never fight over the same transform. */
+  transition:
+    border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cursor-ring::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: inherit;
+  background: inherit;
+  transform: scale(var(--c-scale));
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cursor-label {
+  --c-label: 0;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Poppins, sans-serif;
+  font-size: 3.3px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: var(--c-label);
+  transition: opacity 0.3s ease;
+}
+
+.cursor-dot {
+  --c-dot: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #2b211c;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.cursor-dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  transform: scale(var(--c-dot));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-root {
+    display: none !important;
+  }
+}
+
+
+/* ========================= Section colour fields ==========================
+   The page alternates warm-neutral sections with tinted ones so a 20,000px
+   scroll does not read as one continuous beige. Each field is a pair of very
+   large, very soft radial gradients — strong enough to register as colour,
+   diffuse enough never to compete with the content sitting on top.
+   ========================================================================= */
+.tint {
+  position: relative;
+}
+.tint::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.tint-blush::before {
+  background:
+    radial-gradient(54% 48% at 10% 16%, rgba(232, 98, 79, 0.13), transparent 64%),
+    radial-gradient(50% 46% at 92% 80%, rgba(248, 225, 220, 0.95), transparent 66%);
+}
+.tint-gold::before {
+  background:
+    radial-gradient(56% 50% at 86% 14%, rgba(251, 227, 208, 0.95), transparent 64%),
+    radial-gradient(48% 44% at 6% 84%, rgba(232, 163, 61, 0.14), transparent 66%);
+}
+.tint-peach::before {
+  background:
+    radial-gradient(58% 52% at 18% 80%, rgba(251, 227, 208, 0.95), transparent 64%),
+    radial-gradient(46% 42% at 90% 20%, rgba(242, 137, 122, 0.14), transparent 66%);
+}
+
+/* ========================= Cartoon rig origins ============================ */
+/*
+  `transform-box: fill-box` makes transform-origin percentages resolve against
+  the element's own bounding box rather than the SVG viewport — which is what
+  lets a limb rotate about its joint instead of about the canvas origin.
+
+  .limb  — an upper arm: hinges at the shoulder, its top edge.
+  .joint — a forearm: hinges at the elbow, also its top edge.
+*/
+.limb,
+.joint {
+  transform-box: fill-box;
+  transform-origin: 50% 3%;
+}
+
+/* ======================= Hero illustration drift ========================== */
+/* Each prop in the hero artwork uses this with its own duration and delay, so
+   the group breathes instead of pulsing in unison. */
+@keyframes hero-drift {
+  0%,
+  100% {
+    transform: translateY(-9px) rotate(-1.2deg);
+  }
+  50% {
+    transform: translateY(9px) rotate(1.2deg);
+  }
+}
+
+/* ========================= Shelf piece, breathing ========================= */
+/* The showroom drawing lifts a few pixels on a long cycle, so a static SVG on
+   a flat panel does not read as a dead image. Transform only — no layout, no
+   paint, and it sits inside the SVG so nothing around it moves. */
+@keyframes shelf-float {
+  0%,
+  100% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+.shelf-float {
+  animation: shelf-float 6.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shelf-float {
+    animation: none;
+  }
+}
+
+/* ===================== "Message ready" tick, drawing on ==================== */
+/* The ring sweeps, then the tick strokes itself. Replaces a Lottie player that
+   cost 80 kB gzipped to draw exactly this. */
+@keyframes sent-ring {
+  from {
+    stroke-dashoffset: 330;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes sent-tick {
+  from {
+    stroke-dashoffset: 70;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.sent-ring {
+  stroke-dasharray: 330;
+  animation: sent-ring 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.sent-tick {
+  stroke-dasharray: 70;
+  animation: sent-tick 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sent-ring,
+  .sent-tick {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

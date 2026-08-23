@@ -1,0 +1,4 @@
+# Single-page app: every unmatched path is served the entry document with a 200
+# so client-side anchors and any future routes resolve. Real assets are matched
+# before this rule, so it never shadows a file that exists.
+/*  /index.html  200

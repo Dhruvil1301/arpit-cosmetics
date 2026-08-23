@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="Arpit Cosmetics">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FDFBF8"/>
+      <stop offset="1" stop-color="#EFE0C4"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8F6F32"/>
+      <stop offset="0.5" stop-color="#C9A75E"/>
+      <stop offset="1" stop-color="#7A5C28"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" fill="url(#bg)"/>
+  <circle cx="90" cy="90" r="72" fill="none" stroke="url(#ink)" stroke-width="2" opacity="0.5"/>
+  <path d="M50 126 L90 48 L130 126" fill="none" stroke="url(#ink)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M67 104 H113" fill="none" stroke="url(#ink)" stroke-width="8" stroke-linecap="round"/>
+</svg>
